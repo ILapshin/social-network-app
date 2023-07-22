@@ -4,6 +4,7 @@ from . import models
 from .database import engine
 from .routers import (
     users,
+    auth,
     posts,
     reactions
 )
@@ -11,6 +12,7 @@ from .routers import (
 app = FastAPI()
 
 app.include_router(users.router)
+app.include_router(auth.router)
 app.include_router(posts.router)
 app.include_router(reactions.router)
 

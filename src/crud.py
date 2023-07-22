@@ -2,15 +2,17 @@ from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 
 from . import schemas, models
+from .security import get_password_hash
 
 
 #region User
 
 def create_user(db: Session, request: schemas.UserWrite):
+    hashed_password = get_password_hash(request.password)
     new_user=models.User(
         name=request.name,
         email=request.email,
-        hashed_password=request.password
+        hashed_password=hashed_password
     )
 
     db.add(new_user)
@@ -78,14 +80,7 @@ def update_post(db: Session, id: int, request: schemas.PostWrite):
 
 
 def remove_post(db: Session, id: int):
-    post = db.query(models.Post).filter(models.Post.id == id)
-
-    if not post.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Post id {id} not found.'
-        )
-    
+    post = db.query(models.Post).filter(models.Post.id == id)    
     post.delete(synchronize_session=False)
     db.commit()
 
@@ -135,7 +130,7 @@ def update_reaction(db: Session, id: int, request: schemas.ReactionWrite):
             detail=f'Reaction id {id} not found.'
         )
         
-    reaction.update(request.model_dump)
+    reaction.update(request.model_dump())
     db.commit()
 
     return 'reaction updated'
@@ -155,4 +150,16 @@ def remove_reaction(db: Session, id: int):
 
     return 'reaction deleted'
 
+
+def remove_all_reactions_for_post(db: Session, post_id: int):
+    reactions = db.query(models.Reaction).filter(models.Reaction.post_id == post_id)
+
+    reactions.delete()
+    db.commit()
+
+    return 'reactions deleted'
+
+
+def get_reaction(db: Session, id: int):
+    return db.query(models.Reaction).filter(models.Reaction.id == id).first()
 #endregion

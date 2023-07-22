@@ -10,12 +10,10 @@ class UserBase(BaseModel):
 class PostBase(BaseModel):
     title: str
     content: str
-    user_id: int
 
 
 class ReactionBase(BaseModel):
     is_like: bool
-    user_id: int
     post_id: int
 
 
@@ -24,14 +22,16 @@ class UserWrite(UserBase):
 
 
 class PostWrite(PostBase):
-    pass
+    user_id: int
 
 
 class ReactionWrite(ReactionBase):
-    pass
+    user_id: int
 
 
 class ReactionRead(ReactionBase):
+    user_id: int
+    
     class Config():
         from_attributes = True
 
@@ -45,8 +45,18 @@ class PostRead(PostBase):
 
 
 class UserRead(UserBase):
+    id: int
     posts: List[PostRead] = []
     reactions: List[ReactionRead] = []
     
     class Config():
         from_attributes = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
