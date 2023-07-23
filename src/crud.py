@@ -23,27 +23,15 @@ def create_user(db: Session, request: schemas.UserWrite):
 
     
 def get_user(db: Session, id: int):
-    user = db.query(models.User).filter(models.User.id == id).first()
+    return db.query(models.User).filter(models.User.id == id).first()
     
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'User id {id} not found.'
-        )
-    
-    return user
-
 
 def get_user_by_name(db: Session, username: str):
-    user = db.query(models.User).filter(models.User.name == username).first()
+    return db.query(models.User).filter(models.User.name == username).first() 
 
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'User username {username} not found.'
-        )
 
-    return user    
+def get_user_by_email(db: Session, email: str):
+    return db.query(models.User).filter(models.User.email == email).first()
 
 #endregion
 
@@ -64,14 +52,7 @@ def create_post(db: Session, request: schemas.PostWrite):
 
 
 def update_post(db: Session, id: int, request: schemas.PostWrite):
-    post = db.query(models.Post).filter(models.Post.id == id)
-    
-    if not post.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Post id {id} not found.'
-        )
-    
+    post = db.query(models.Post).filter(models.Post.id == id)    
     post.update(request.model_dump())
     db.commit()
 
