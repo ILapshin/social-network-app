@@ -41,7 +41,7 @@ class ReactionRead(ReactionBase):
 
 
 class PostRead(PostBase):
-    # created_at: int
+    created_at: str
     id: int    
     user_id: int
     reactions: List[ReactionRead] = []
