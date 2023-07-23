@@ -121,8 +121,13 @@ def create_reaction(db: Session, request: schemas.ReactionWrite):
     return new_reaction
 
 
-def update_reaction(db: Session, id: int, request: schemas.ReactionWrite):
-    reaction = db.query(models.Reaction).filter(models.Reaction.id == id)
+def update_reaction(
+    db: Session, 
+    post_id: int,
+    user_id: int, 
+    request: schemas.ReactionUpdate
+):
+    reaction = db.query(models.Reaction).filter(models.Reaction.user_id == user_id, models.Reaction.post_id == post_id)
     
     if not reaction.first():
         raise HTTPException(
@@ -136,8 +141,12 @@ def update_reaction(db: Session, id: int, request: schemas.ReactionWrite):
     return 'reaction updated'
 
 
-def remove_reaction(db: Session, id: int):
-    reaction = db.query(models.Reaction).filter(models.Reaction.id == id)
+def remove_reaction(
+    db: Session,
+    user_id: int,
+    post_id: int
+):
+    reaction = db.query(models.Reaction).filter(models.Reaction.user_id == user_id, models.Reaction.post_id == post_id)
     
     if not reaction.first():
         raise HTTPException(
@@ -160,6 +169,7 @@ def remove_all_reactions_for_post(db: Session, post_id: int):
     return 'reactions deleted'
 
 
-def get_reaction(db: Session, id: int):
-    return db.query(models.Reaction).filter(models.Reaction.id == id).first()
+def get_reaction(db: Session, post_id: int, user_id: int):
+    return db.query(models.Reaction).filter(models.Reaction.user_id == user_id, models.Reaction.post_id == post_id).first()
+    
 #endregion

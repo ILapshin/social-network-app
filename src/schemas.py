@@ -29,6 +29,10 @@ class ReactionWrite(ReactionBase):
     user_id: int
 
 
+class ReactionUpdate(BaseModel):
+    is_like: bool
+
+
 class ReactionRead(ReactionBase):
     user_id: int
     
@@ -38,6 +42,8 @@ class ReactionRead(ReactionBase):
 
 class PostRead(PostBase):
     # created_at: int
+    id: int    
+    user_id: int
     reactions: List[ReactionRead] = []
 
     class Config():
