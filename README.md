@@ -10,9 +10,6 @@ As a user you can:
 
 API documentation created automatically by the FastAPI is available in Swagger format at http://localhost:8000/docs (or the host you are running the app on).
 
-## Dev Notes
-
-The app is intended
 
 ## Deployment
 
