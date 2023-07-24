@@ -78,8 +78,6 @@ docker volume create app-storage
 docker run -p 8000:8000 -v app-storage:/code -e "DB_URL=[URL_TO_UOUR_DB]" -e "SECRET_KEY=[YOUR_SECRET_KEY]" social-network-app 
 ```
 
-Volume folder will be associated with the container, database and uploaded csv files will remain after container stops or is killed.
-
 
 ## Testing
 
