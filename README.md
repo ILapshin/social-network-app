@@ -51,7 +51,7 @@ SECRET_KEY=YOUR_SECRET_KEY
 4. Run server with command 
 
 ```
-uvicorn app.main:app 
+uvicorn src.main:app 
 ```
 
 Application will be running on http://localhost:8000. 
